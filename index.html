@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <title>WebARモデル表示</title>
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <style>
-      body {
-        margin: 0;
-        background-color: #f5f5f5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-      model-viewer {
-        width: 100%;
-        height: 100%;
-        max-width: 100px;
-        max-height: 100px;
-      }
-    </style>
-  </head>
-  <body>
-    <model-viewer
-      src="model.glb"
-      ios-src="model.usdz"
-      alt="3Dモデル"
-      camera-controls
-      auto-rotate
-      ar
-      ar-modes="scene-viewer webxr quick-look"
-    >
-    </model-viewer>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <title>ar-demomomo - Web AR Viewer</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      max-width: 800px;
+      max-height: 800px;
+    }
+  </style>
+</head>
+<body>
+  <model-viewer
+    src="model.glb"
+    ios-src="model.usdz"
+    alt="3Dモデル"
+    ar
+    ar-modes="scene-viewer webxr quick-look"
+    auto-rotate
+    camera-controls
+    environment-image="brown_photostudio_05_2k.hdr"
+    exposure="1"
+    shadow-intensity="1"
+  >
+  </model-viewer>
+</body>
 </html>
