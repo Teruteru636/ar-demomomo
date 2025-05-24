@@ -3,12 +3,28 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>3Dモデルカラー変更</title>
+<title>3Dビューア背景色変更</title>
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <style>
-  body { margin: 20px; font-family: sans-serif; }
-  model-viewer { width: 400px; height: 400px; background-color: #eee; display: block; margin-bottom: 20px; }
-  label { display: block; margin-bottom: 8px; }
+  body {
+    margin: 20px;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  model-viewer {
+    width: 400px;
+    height: 400px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    margin: 8px 0;
+  }
 </style>
 </head>
 <body>
@@ -22,36 +38,23 @@
 </div>
 
 <script>
-  const viewer = document.querySelector('#viewer');
-  const r = document.querySelector('#r');
-  const g = document.querySelector('#g');
-  const b = document.querySelector('#b');
+  const viewer = document.getElementById('viewer');
+  const r = document.getElementById('r');
+  const g = document.getElementById('g');
+  const b = document.getElementById('b');
 
-  function updateColor() {
-    // RGB値を0〜1に変換
+  function updateBackgroundColor() {
     const color = `rgb(${r.value}, ${g.value}, ${b.value})`;
-    // model-viewer の Three.js マテリアルにアクセスして色変更
-    const material = viewer.model.materials?.[0];
-    if (material) {
-      // PBRマテリアルなら baseColorFactor を変更
-      material.pbrMetallicRoughness.baseColorFactor = [
-        r.value / 255,
-        g.value / 255,
-        b.value / 255,
-        1.0
-      ];
-      viewer.model.materials = viewer.model.materials; // 変更を反映
-    }
+    viewer.style.backgroundColor = color;
   }
 
-  // モデルが読み込まれたら初期化
-  viewer.addEventListener('load', () => {
-    updateColor();
-  });
+  // 初期表示時に背景色設定
+  updateBackgroundColor();
 
-  r.addEventListener('input', updateColor);
-  g.addEventListener('input', updateColor);
-  b.addEventListener('input', updateColor);
+  // スライダーの値が変わったら背景色を更新
+  r.addEventListener('input', updateBackgroundColor);
+  g.addEventListener('input', updateBackgroundColor);
+  b.addEventListener('input', updateBackgroundColor);
 </script>
 
 </body>
