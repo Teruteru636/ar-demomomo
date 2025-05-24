@@ -1,45 +1,58 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3Dモデルビューア</title>
-  <!-- model-viewerライブラリ読み込み -->
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    model-viewer {
-      width: 100%;
-      height: 100%;
-      max-width: 600px;
-      max-height: 600px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>3Dモデルカラー変更</title>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+  body { margin: 20px; font-family: sans-serif; }
+  model-viewer { width: 400px; height: 400px; background-color: #eee; display: block; margin-bottom: 20px; }
+  label { display: block; margin-bottom: 8px; }
+</style>
 </head>
 <body>
 
-  <!-- 3Dモデル表示 -->
-  <model-viewer
-    src="model.usdz"
-    ios-src="model.usdz"
-    alt="3Dモデル"
-    camera-controls
-    auto-rotate
-    ar
-    ar-modes="scene-viewer quick-look webxr"
-    environment-image="neutral"
-    exposure="1"
-    shadow-intensity="1"
-    field-of-view="80deg"
-  >
-  </model-viewer>
+<model-viewer id="viewer" src="model.usdz" ios-src="model.usdz" alt="3Dモデル" camera-controls auto-rotate></model-viewer>
+
+<div>
+  <label>赤 (R): <input type="range" id="r" min="0" max="255" value="255"></label>
+  <label>緑 (G): <input type="range" id="g" min="0" max="255" value="255"></label>
+  <label>青 (B): <input type="range" id="b" min="0" max="255" value="255"></label>
+</div>
+
+<script>
+  const viewer = document.querySelector('#viewer');
+  const r = document.querySelector('#r');
+  const g = document.querySelector('#g');
+  const b = document.querySelector('#b');
+
+  function updateColor() {
+    // RGB値を0〜1に変換
+    const color = `rgb(${r.value}, ${g.value}, ${b.value})`;
+    // model-viewer の Three.js マテリアルにアクセスして色変更
+    const material = viewer.model.materials?.[0];
+    if (material) {
+      // PBRマテリアルなら baseColorFactor を変更
+      material.pbrMetallicRoughness.baseColorFactor = [
+        r.value / 255,
+        g.value / 255,
+        b.value / 255,
+        1.0
+      ];
+      viewer.model.materials = viewer.model.materials; // 変更を反映
+    }
+  }
+
+  // モデルが読み込まれたら初期化
+  viewer.addEventListener('load', () => {
+    updateColor();
+  });
+
+  r.addEventListener('input', updateColor);
+  g.addEventListener('input', updateColor);
+  b.addEventListener('input', updateColor);
+</script>
 
 </body>
 </html>
