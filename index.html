@@ -5,19 +5,27 @@
     <title>3Dモデルビューア</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
-      body { margin: 0; background: #fff; }
-      model-viewer { width: 100vw; height: 100vh; }
+      body {
+        margin: 0;
+        background-color: #f5f5f5;
+      }
+      model-viewer {
+        width: 100vw;
+        height: 100vh;
+      }
     </style>
   </head>
   <body>
     <model-viewer
       src="model.glb"
       ios-src="model.usdz"
+      alt="3Dモデル"
+      camera-controls
+      auto-rotate
       ar
       ar-modes="scene-viewer webxr quick-look"
-      auto-rotate
-      camera-controls
-      alt="3Dモデル表示"
-    ></model-viewer>
+    >
+    </model-viewer>
   </body>
 </html>
+
