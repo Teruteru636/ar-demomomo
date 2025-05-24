@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>3Dビューア背景色変更</title>
+<title>背景色変更＆AR表示</title>
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <style>
   body {
@@ -13,13 +13,18 @@
     flex-direction: column;
     align-items: center;
   }
-  model-viewer {
+  #viewer-container {
     width: 400px;
     height: 400px;
-    background-color: rgb(255, 255, 255);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  model-viewer {
+    width: 100%;
+    height: 100%;
+    /* 背景色は親に任せる */
+    background-color: transparent !important;
   }
   label {
     display: block;
@@ -29,7 +34,18 @@
 </head>
 <body>
 
-<model-viewer id="viewer" src="model.usdz" ios-src="model.usdz" alt="3Dモデル" camera-controls auto-rotate></model-viewer>
+<div id="viewer-container">
+  <model-viewer
+    id="viewer"
+    src="model.glb"           <!-- glb推奨 -->
+    ios-src="model.usdz"      <!-- usdzファイル -->
+    alt="3Dモデル"
+    camera-controls
+    auto-rotate
+    ar
+    ar-modes="scene-viewer webxr quick-look"
+  ></model-viewer>
+</div>
 
 <div>
   <label>赤 (R): <input type="range" id="r" min="0" max="255" value="255"></label>
@@ -38,20 +54,18 @@
 </div>
 
 <script>
-  const viewer = document.getElementById('viewer');
   const r = document.getElementById('r');
   const g = document.getElementById('g');
   const b = document.getElementById('b');
+  const container = document.getElementById('viewer-container');
 
   function updateBackgroundColor() {
     const color = `rgb(${r.value}, ${g.value}, ${b.value})`;
-    viewer.style.backgroundColor = color;
+    container.style.backgroundColor = color;
   }
 
-  // 初期表示時に背景色設定
   updateBackgroundColor();
 
-  // スライダーの値が変わったら背景色を更新
   r.addEventListener('input', updateBackgroundColor);
   g.addEventListener('input', updateBackgroundColor);
   b.addEventListener('input', updateBackgroundColor);
